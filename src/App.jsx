@@ -24,10 +24,11 @@ function App() {
   return (
     <UserContext.Provider value={{usuarioAtual, setUsuarioAtual}}>
       <ThemeProvider theme={darkTheme}>
+      <BrowserRouter>
       <Head/>
         <Box component="main" sx={{ backgroundColor: 'grey.800', height: '100vh' }}>
           <Container>
-            <BrowserRouter>
+
                 <Routes>
                   {
                     usuarioAtual === undefined &&
@@ -50,9 +51,10 @@ function App() {
                     </>
                   }
                 </Routes>
-            </BrowserRouter>
+
           </Container>
         </Box>
+        </BrowserRouter>
         <Footer/>
       </ThemeProvider>
     </UserContext.Provider>

@@ -16,9 +16,10 @@ export const Login = () => {
         loadLogin({ variables: { email } })
             .then((lazy) => {
                 const user = lazy.data.user[0]
+                console.log(user);
                 if (user.password === btoa(senha)) {
-                    const { username, name, id, image } = user
-                    setUsuarioAtual({ id, name, username, image, email });
+                    const { username, name, id, email } = user
+                    setUsuarioAtual({ id, name, username, email });
                     navigate('/conversas');
                 }
                 else{
@@ -32,7 +33,7 @@ export const Login = () => {
         <Card >
             <CardContent>
                     <Typography variant='h4' sx={{ textAlign: 'center' }} pb={2}>
-                        Bem-vindo ao Nivensseger, onde as conversas são livres e privadas! 😎
+                        Bem-vindo ao Nivensseger, onde as conversas são livres. 😎
                     </Typography>
                     <Grid item xs={12} pb={2}>
                         <TextField id="txtEmail" name='txtEmail' label="Email" variant="outlined" fullWidth value={email} onChange={(e) => setEmail(e.target.value)}/>

@@ -1,13 +1,25 @@
 import React from "react";
 import { Box, Avatar, Typography, List,
-    Card, CardContent, CardHeader, } from "@mui/material";
+    Card, CardContent, CardHeader, TextField, IconButton, Grid, } from "@mui/material";
 import GroupIcon from '@mui/icons-material/Group';
 import { ItemPesquisa } from "./ItemPesquisa";
+import { useLazyQuery } from "@apollo/client";
+import { GET_USERS } from "../../services/user/query";
+import SearchIcon from '@mui/icons-material/Search';
+import { UserContext } from '../../App';
+
 
 export const Pesquisa = () => {
-    const pessoaFake = {
-        id: 1,
-        nome: "RRIQUE"
+    const [nome, setNome] = React.useState("");
+    const [carregarPessoas] = useLazyQuery(GET_USERS);
+    const [pessoas, setPessoas] = React.useState([]);
+    const { usuarioAtual } = React.useContext(UserContext);
+
+    function handlePesquisar(){
+        carregarPessoas({variables: { name: nome }})
+        .then((lazy) => {
+            setPessoas(lazy.data.user.filter(p => p.id !== usuarioAtual.id))
+        });
     }
 
     return(
@@ -18,14 +30,19 @@ export const Pesquisa = () => {
                     <Avatar><GroupIcon></GroupIcon></Avatar>
                 </>
                 } title={
-                    <Typography component="h5" color="primary.contrastText">Lista de Amigos</Typography>
+                    <Grid item xs={12} sx={{display: 'flex'}}>
+                        <TextField label="Nome" variant="outlined" sx={{ maxHeight: "120px" }} color="primary" maxRows={4} fullWidth multiline value={nome} onChange={(e) => setNome(e.target.value)}/>
+                        <IconButton sx={{ mx: 1 }} onClick={handlePesquisar}>
+                            <SearchIcon sx={{ color: 'action.active'}} />
+                        </IconButton>
+                    </Grid>
                 }>   
             </CardHeader>
             <CardContent sx={{ p: 0 }}>
                 <Box sx={{ minHeight: '68vh', maxHeight: '68vh', overflowY: 'scroll', overflowX: 'hidden' }}>
                     <List component="nav" sx={{ pr: 1 }}>
                         {
-                            Array.from({length: 35}, () => pessoaFake).map((pessoa, index) => {
+                            pessoas.map((pessoa, index) => {
                                 return(<ItemPesquisa key={index} pessoa={pessoa}/>)
                             })
                         }

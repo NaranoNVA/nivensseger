@@ -20,8 +20,8 @@ export const Cadastro = () => {
     function handleCadastrar() {
        cadastro({ variables: { username, password: btoa(senha), name: nome, email } })
        .then(retorno => {
-           const { id, name, username, image, email } = retorno.data.insert_user.returning[0];
-           setUsuarioAtual({ id, name, username, image, email });
+           const { id, name, username, email } = retorno.data.insert_user.returning[0];
+           setUsuarioAtual({ id, name, username, email });
            navigate('/conversas');
        })
     }

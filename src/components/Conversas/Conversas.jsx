@@ -37,7 +37,7 @@ export const Conversas = () => {
                     <Avatar><GroupIcon></GroupIcon></Avatar>
                 </>
                 } title={
-                    <Typography component="h5" color="primary.contrastText">Lista de Amigos</Typography>
+                    <Typography component="h5" color="primary.contrastText">Lista de Conversas</Typography>
                 }>   
             </CardHeader>
             <CardContent sx={{ p: 0 }}>

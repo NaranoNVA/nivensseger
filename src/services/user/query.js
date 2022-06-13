@@ -7,8 +7,18 @@ query getUser($email:String!) {
       name
       password
       username
-      image
       email
     }
   }
+`;
+
+export const GET_USERS = gql`
+query getUsers($name: String = "") {
+  user(where: {name: {_iregex: $name}}) {
+    id
+    email
+    name
+    username
+  }
+}
 `;

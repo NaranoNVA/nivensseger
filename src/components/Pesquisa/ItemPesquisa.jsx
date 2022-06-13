@@ -1,13 +1,21 @@
 import React from "react";
 import { IconButton, Avatar,
     ListItem, ListItemButton, ListItemAvatar, ListItemText  } from "@mui/material";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ChatIcon from '@mui/icons-material/Chat';
 import { deepOrange } from '@mui/material/colors';
-import { Navigate } from "react-router";
+import { UserContext } from '../../App';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from "@apollo/client";
+import { INICIAR_CONVERSA } from "../../services/conversas/mutation";
+
 
 
 export const ItemPesquisa = ({ pessoa }) => {
-    const [redirect, setRedirect] = React.useState(false);
+    const { usuarioAtual } = React.useContext(UserContext);
+    const [conversar] = useMutation(INICIAR_CONVERSA);
+    const navigate = useNavigate();
+
+
     function stringAvatar(name) {
         return {
           sx: {
@@ -17,22 +25,26 @@ export const ItemPesquisa = ({ pessoa }) => {
         };
     }
 
-
-    if (redirect)
-        return <Navigate to={`/perfil/${pessoa.id}`}  />;
+    function handleIniciarConversa(){
+      conversar({ variables: { $userId_1: usuarioAtual.id, $userId_2: pessoa.id } })
+      .then(retorno => {
+          const { id } = retorno.data.insert_talks.returning[0];
+          navigate('/conversa/'+id);
+      }).catch((error) => console.log(error));
+    }
 
     return (
         <ListItem disablePadding
             secondaryAction={
-              <IconButton edge="end" aria-label="delete">
-                <PersonAddIcon />
+              <IconButton edge="end" aria-label="delete" onClick={handleIniciarConversa}>
+                <ChatIcon />
               </IconButton>
             }>
-            <ListItemButton role={undefined} dense onClick={() => setRedirect(true)}>
+            <ListItemButton role={undefined} dense>
                 <ListItemAvatar>
-                        <Avatar {...stringAvatar(`${pessoa.nome}`)} sx={{ fontWeight: "initial" }} />
+                        <Avatar {...stringAvatar(`${pessoa.name}`)} sx={{ fontWeight: "initial" }} />
                 </ListItemAvatar>
-              <ListItemText primary={pessoa.nome} />
+              <ListItemText primary={pessoa.name} />
             </ListItemButton>
         </ListItem>
     )
