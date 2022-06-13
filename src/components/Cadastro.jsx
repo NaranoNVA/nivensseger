@@ -48,7 +48,7 @@ export const Cadastro = () => {
             </CardContent>
             <CardActions>
                 {/*<Button fullWidth variant="contained" color='secondary' >Entrar como Convidado</Button>*/}
-                <Button fullWidth variant="contained" onClick={() => navigate('/login')}>Ir para Login</Button>
+                <Button fullWidth variant="contained" color="error" onClick={() => navigate('/login')}>Ir para Login</Button>
                 <Button fullWidth variant="contained" onClick={handleCadastrar}>Cadastrar conta</Button>
             </CardActions>
         </Card>

@@ -26,7 +26,7 @@ export const ItemPesquisa = ({ pessoa }) => {
     }
 
     function handleIniciarConversa(){
-      conversar({ variables: { $userId_1: usuarioAtual.id, $userId_2: pessoa.id } })
+      conversar({ variables: { userId_1: usuarioAtual.id, userId_2: pessoa.id } })
       .then(retorno => {
           const { id } = retorno.data.insert_talks.returning[0];
           navigate('/conversa/'+id);

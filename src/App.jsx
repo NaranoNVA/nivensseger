@@ -7,7 +7,6 @@ import { Head } from "./mainComponents/head";
 import { Login } from "./components/Login";
 import { Cadastro } from "./components/Cadastro";
 import { Conversa } from "./components/Conversa/Conversa";
-import { Amigos } from "./components/Amigos/Amigos";
 import { Pesquisa } from "./components/Pesquisa/Pesquisa";
 import { Conversas } from "./components/Conversas/Conversas";
 
@@ -42,10 +41,7 @@ function App() {
                     usuarioAtual !== undefined &&
                     <>
                       <Route path="/pessoas" element={<Pesquisa />} />
-                      {/*<Route path="/perfil/:userId?" element={<Cadastro />} />*/}
-                      <Route path="/amigos" element={<Amigos />} />
                       <Route path="/conversas" element={<Conversas />} />
-                      {/*<Route path="/conversa" element={<Conversa />} />*/}
                       <Route path="/conversa/:conversaId" element={<Conversa />} />
                       <Route path="*" element={<Navigate to="/conversas" replace />} />
                     </>

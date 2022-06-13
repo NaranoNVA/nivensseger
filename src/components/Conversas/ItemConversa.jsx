@@ -32,7 +32,7 @@ export const ItemConversa = ({ conversa }) => {
     return (
         <ListItem disablePadding
             secondaryAction={
-              <IconButton edge="end" aria-label="delete">
+              <IconButton edge="end" aria-label="delete" onClick={handleVerConversa}>
                 <ChatIcon />
               </IconButton>
             }>
