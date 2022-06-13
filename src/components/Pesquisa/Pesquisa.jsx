@@ -1,5 +1,4 @@
 import React from "react";
-import { getAuth  } from "firebase/auth";
 import { Box, Avatar, Typography, List,
     Card, CardContent, CardHeader, } from "@mui/material";
 import GroupIcon from '@mui/icons-material/Group';
@@ -10,7 +9,6 @@ export const Pesquisa = () => {
         id: 1,
         nome: "RRIQUE"
     }
-    console.log(getAuth());
 
     return(
         <Box sx={{ py: 4 }}>

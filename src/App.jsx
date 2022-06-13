@@ -19,30 +19,41 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const [usuarioAtual, setUsuarioAtual] = React.useState("");
+  const [usuarioAtual, setUsuarioAtual] = React.useState(undefined);
 
   return (
     <UserContext.Provider value={{usuarioAtual, setUsuarioAtual}}>
       <ThemeProvider theme={darkTheme}>
       <Head/>
-        <Box component="main" sx={{ backgroundColor: 'grey.800', height: 'calc(100vh - 69px)' }}>
+        <Box component="main" sx={{ backgroundColor: 'grey.800', height: '100vh' }}>
           <Container>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/cadastro" element={<Cadastro />} />
-                    <Route path="/pessoas" element={<Pesquisa />} />
-                    {/*<Route path="/perfil/:userId?" element={<Cadastro />} />*/}
-                    <Route path="/amigos" element={<Amigos />} />
-                    <Route path="/conversas" element={<Conversas />} />
-                    {/*<Route path="/conversa" element={<Conversa />} />*/}
-                    <Route path="/conversa/:conversaId?" element={<Conversa />} />
-                    <Route path="*" element={<Navigate to="/login" replace />} />
+                  {
+                    usuarioAtual === undefined &&
+                    <>
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/cadastro" element={<Cadastro />} />
+                      <Route path="*" element={<Navigate to="/login" replace />} />
+                    </>
+                  }
+                  {
+                    usuarioAtual !== undefined &&
+                    <>
+                      <Route path="/pessoas" element={<Pesquisa />} />
+                      {/*<Route path="/perfil/:userId?" element={<Cadastro />} />*/}
+                      <Route path="/amigos" element={<Amigos />} />
+                      <Route path="/conversas" element={<Conversas />} />
+                      {/*<Route path="/conversa" element={<Conversa />} />*/}
+                      <Route path="/conversa/:conversaId" element={<Conversa />} />
+                      <Route path="*" element={<Navigate to="/conversas" replace />} />
+                    </>
+                  }
                 </Routes>
             </BrowserRouter>
           </Container>
-          <Footer/>
         </Box>
+        <Footer/>
       </ThemeProvider>
     </UserContext.Provider>
   );

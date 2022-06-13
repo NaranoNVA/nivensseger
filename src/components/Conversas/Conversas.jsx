@@ -3,12 +3,32 @@ import { Box, Avatar, Typography, List,
     Card, CardContent, CardHeader, } from "@mui/material";
 import GroupIcon from '@mui/icons-material/Group';
 import { ItemConversa } from "./ItemConversa";
+import { UserContext } from '../../App';
+import { useSubscription } from "@apollo/client";
+import { GET_USER_TALKS } from "../../services/conversas/subscriptions";
+
 
 export const Conversas = () => {
-    const converaFake = {
-        id: 1,
-        nome: "RRIQUE"
+    const { usuarioAtual } = React.useContext(UserContext);   
+    const { data, loading, error } = useSubscription(GET_USER_TALKS, {
+        variables: { userId: usuarioAtual.id }
+    });
+    
+    if(loading){
+        return (
+            <div>
+                Carregando...
+            </div>
+        )
     }
+
+    if(error){
+        console.log(error);
+        return (
+            <div>Erro...</div>
+        )
+    }
+
     return(
         <Box sx={{ py: 4 }}>
         <Card>
@@ -24,7 +44,7 @@ export const Conversas = () => {
                 <Box sx={{ minHeight: '68vh', maxHeight: '68vh', overflowY: 'scroll', overflowX: 'hidden' }}>
                     <List component="nav" sx={{ pr: 1 }}>
                         {
-                            Array.from({length: 35}, () => converaFake).map((conversa, index) => {
+                            data.talks.map((conversa, index) => {
                                 return(<ItemConversa key={index} conversa={conversa}/>)
                             })
                         }

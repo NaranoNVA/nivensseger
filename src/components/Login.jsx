@@ -1,32 +1,35 @@
 import React from 'react';
-import { getAuth, signInWithEmailAndPassword  } from "firebase/auth";
-import { Card, CardActions, CardContent, Button, Typography, TextField, Grid  } from "@mui/material";
+import { Card, CardActions, CardContent, Button, Typography, TextField, Grid, Box  } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../App';
+import { GET_USER } from '../services/user/query';
+import { useLazyQuery } from '@apollo/client';
 
 export const Login = () => {
     const [email, setEmail] = React.useState("");
     const [senha, setSenha] = React.useState("");
-    const { usuarioAtual, setUsuarioAtual } = React.useContext(UserContext);
+    const {setUsuarioAtual } = React.useContext(UserContext);
+    const [loadLogin] = useLazyQuery(GET_USER);
     const navigate = useNavigate();
-    const auth = getAuth();
-    console.log(getAuth());
-
 
     function handleLogar() {
-        signInWithEmailAndPassword(auth, email, senha)
-        .then((userCredential) => {
-            setUsuarioAtual(userCredential.user);
-            navigate('/pessoas');
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-        });
+        loadLogin({ variables: { email } })
+            .then((lazy) => {
+                const user = lazy.data.user[0]
+                if (user.password === btoa(senha)) {
+                    const { username, name, id, image } = user
+                    setUsuarioAtual({ id, name, username, image, email });
+                    navigate('/conversas');
+                }
+                else{
+                    alert("Senha incorreta");
+                }
+            })
     }
 
     return(
-        <Card sx={{ my: 4 }}>
+        <Box component='div' id='Teste' sx={{ py: 4 }}>
+        <Card >
             <CardContent>
                     <Typography variant='h4' sx={{ textAlign: 'center' }} pb={2}>
                         Bem-vindo ao Nivensseger, onde as conversas são livres e privadas! 😎
@@ -43,5 +46,6 @@ export const Login = () => {
                 <Button fullWidth variant="contained" color='primary' onClick={handleLogar} >Entrar</Button>
             </CardActions>
         </Card>
+        </Box>
     );
 }

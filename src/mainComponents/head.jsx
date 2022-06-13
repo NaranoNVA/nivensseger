@@ -12,8 +12,6 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { getAuth, signOut } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
 
 
 
@@ -22,10 +20,8 @@ const settings = [ 'Profile', 'Account', 'Logout'];
 export const Head = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);   
-    const auth = getAuth();
-   // const navigate = useNavigate();
 
-
+    console.log(settings);
     const handleOpenNavMenu = (event) => {
       setAnchorElNav(event.currentTarget);
     };
@@ -40,12 +36,7 @@ export const Head = () => {
     };
 
     function handleDeslogar() {
-      signOut(auth).then(() => {
-       // navigate('/login');
-        handleCloseUserMenu();
-      }).catch((error) => {
-        // An error happened.
-      });
+      handleCloseUserMenu();
     }
 
     return (

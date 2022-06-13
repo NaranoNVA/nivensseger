@@ -1,13 +1,16 @@
 import React from "react";
+import { UserContext } from '../../App';
 import { IconButton, Avatar,
     ListItem, ListItemButton, ListItemAvatar, ListItemText  } from "@mui/material";
 import ChatIcon from '@mui/icons-material/Chat';
 import { deepOrange } from '@mui/material/colors';
-import { Navigate } from "react-router";
+import { useNavigate } from 'react-router-dom';
 
 
 export const ItemConversa = ({ conversa }) => {
-    const [redirect, setRedirect] = React.useState(false);
+    const {usuarioAtual} = React.useContext(UserContext);
+    const navigate = useNavigate();
+
     function stringAvatar(name) {
         return {
           sx: {
@@ -17,9 +20,14 @@ export const ItemConversa = ({ conversa }) => {
         };
     }
 
+    function setaNome(){
+      return conversa.user_1.id !== usuarioAtual.id ? conversa.user_1.name : conversa.user_2.name
+    }
 
-    if (redirect)
-        return <Navigate to={`/conversa/${conversa.id}`}  />;
+
+    function handleVerConversa(){
+        navigate(`/conversa/${conversa.id}`);
+    }
 
     return (
         <ListItem disablePadding
@@ -28,11 +36,11 @@ export const ItemConversa = ({ conversa }) => {
                 <ChatIcon />
               </IconButton>
             }>
-            <ListItemButton role={undefined} dense onClick={() => setRedirect(true)}>
+            <ListItemButton role={undefined} dense onClick={handleVerConversa}>
                 <ListItemAvatar>
-                        <Avatar {...stringAvatar(`${conversa.nome}`)} sx={{ fontWeight: "initial" }} />
+                        <Avatar {...stringAvatar(`${setaNome()}`)} sx={{ fontWeight: "initial" }} />
                 </ListItemAvatar>
-              <ListItemText primary={conversa.nome} />
+              <ListItemText primary={setaNome()} />
             </ListItemButton>
         </ListItem>
     )
